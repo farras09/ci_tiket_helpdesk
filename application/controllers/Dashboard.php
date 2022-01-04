@@ -32,7 +32,7 @@ class Dashboard extends CI_Controller
             $data['pengaduan'] = $this->admin->notifPengajuanUmum();
         }
         $data['jumlah_pengaduan'] = $this->admin->getJumlahPengaduanPerHari();
-        $data['pengaduan_diproses'] = $this->admin->getJumlahPengaduan('Diproses');
+        $data['pengaduan_diproses'] = $this->admin->jumlahPengaduanByUmum();
         $data['pengaduan_diterima'] = $this->admin->getJumlahPengaduan('Diterima');
         $data['pengaduan_ditunda'] = $this->admin->getJumlahPengaduan('Ditunda');
         if (isTeknisi()) {

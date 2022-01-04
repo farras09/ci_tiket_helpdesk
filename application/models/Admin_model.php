@@ -130,10 +130,11 @@ class Admin_model extends CI_Model
 
     public function jumlahPengaduanByUmum()
     {
-        $this->db->where('pgd_biaya_perbaikan =', 1);
+        $this->db->where('pgd_biaya_perbaikan ', 1);
         // $this->db->or_where('pgd_adm_status =', 'Diterima');
         // $this->db->or_where('pgd_umum_status =', 'Diproses');
-        $this->db->where('pgd_read_by_umum =', 0);
+        // $this->db->where('pgd_read_by_umum =', 0);
+        // $this->db->or_where('pgd_read_by_umum =', 1);
         $query = $this->db->get('tkt_pengaduan');
         return $query->num_rows();
     }
