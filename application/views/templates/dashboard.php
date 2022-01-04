@@ -262,6 +262,45 @@
                             </li>
                         <?php endif; ?>
 
+                        <?php if (isTeknisi()) : ?>
+                            <!-- Nav Item - Alerts -->
+                            <li class="nav-item dropdown no-arrow mx-1">
+                                <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-bell fa-fw"></i>
+                                    <!-- Counter - Alerts -->
+                                    <span class="badge badge-danger badge-counter"><?= $notifikasi; ?></span>
+                                </a>
+                                <!-- Dropdown - Alerts -->
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                                    <h6 class="dropdown-header">
+                                        Pengajuan Masuk Diterima
+                                    </h6>
+                                    <?php if ($pengaduan) :
+                                        foreach ($pengaduan as $data) : ?>
+                                            <a class="dropdown-item d-flex align-items-center" href="<?= site_url('pengaduan/read'); ?>">
+                                                <div class="mr-3">
+                                                    <div class="icon-circle bg-primary">
+                                                        <i class="fas fa-file-alt text-white"></i>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <div class="small text-gray-500"><?= $data['pg_nama']; ?></div>
+                                                    <span class="font-weight-bold"><?= $data['pgd_uraian_pengaduan']; ?></span>
+                                                </div>
+                                            </a>
+
+                                        <?php endforeach; ?>
+                                    <?php else : ?>
+
+                                        <p class="text-center small text-danger mt-3" href="#">Tidak ada pengajuan yang diterima</p>
+
+                                    <?php endif; ?>
+
+                                </div>
+                            </li>
+                        <?php endif; ?>
+
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->

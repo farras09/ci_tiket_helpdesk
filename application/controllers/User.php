@@ -15,7 +15,7 @@ class User extends CI_Controller
     public function index()
     {
         $data['notifikasi'] = $this->admin->jumlahPengaduanByAdmin();
-        $data['pengaduan'] = $this->admin->notifPengajuanUmum();
+        $data['pengaduan'] = $this->admin->notifPengajuanAdmin();
         $data['title'] = 'Admin';
         $role1 = [
             'usr_role' => 'Bagian Umum',
@@ -30,7 +30,7 @@ class User extends CI_Controller
     public function teknisi()
     {
         $data['notifikasi'] = $this->admin->jumlahPengaduanByAdmin();
-        $data['pengaduan'] = $this->admin->notifPengajuanUmum();
+        $data['pengaduan'] = $this->admin->notifPengajuanAdmin  ();
         $data['title'] = 'Admin';
         $data['user'] = $this->admin->get('tkt_user', '', ['usr_role' => 'Teknisi IT']);
         $this->template->load('templates/dashboard', 'user/index', $data);

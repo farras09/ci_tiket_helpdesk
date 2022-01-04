@@ -23,16 +23,20 @@ class Dashboard extends CI_Controller
         $data['bidang'] = $this->admin->count('tkt_bidang');
         if (isBagianUmum()) {
             $data['notifikasi'] = $this->admin->jumlahPengaduanByUmum();
-        } elseif (isAdmin()) {
+        } else if (isAdmin()) {
             $data['notifikasi'] = $this->admin->jumlahPengaduanByAdmin();
+        } else {
+            $data['notifikasi'] = $this->admin->jumlahPengaduanByTeknisi($this->session->userdata('login_session')['nama']);
         }
         if (isAdmin()) {
             $data['pengaduan'] = $this->admin->notifPengajuanAdmin();
         } else if (isBagianUmum()) {
             $data['pengaduan'] = $this->admin->notifPengajuanUmum();
+        } else {
+            $data['pengaduan'] = $this->admin->notifPengajuanTeknisi($this->session->userdata('login_session')['nama']);
         }
         $data['jumlah_pengaduan'] = $this->admin->getJumlahPengaduanPerHari();
-        $data['pengaduan_diproses'] = $this->admin->jumlahPengaduanByUmum();
+        $data['pengaduan_diproses'] = $this->admin->getJumlahPengaduanUmum();
         $data['pengaduan_diterima'] = $this->admin->getJumlahPengaduan('Diterima');
         $data['pengaduan_ditunda'] = $this->admin->getJumlahPengaduan('Ditunda');
         if (isTeknisi()) {

@@ -56,7 +56,16 @@ class Admin_model extends CI_Model
 
     public function getJumlahPengaduan($status)
     {
+    
         $this->db->where('pgd_umum_status', $status);
+        return $this->db->get('tkt_pengaduan')->num_rows();
+    }
+
+    public function getJumlahPengaduanUmum()
+    {
+    
+        $this->db->where('pgd_biaya_perbaikan =', 1);
+        // $this->db->where('pgd_read_by_umum =', 0);
         return $this->db->get('tkt_pengaduan')->num_rows();
     }
 
@@ -130,11 +139,18 @@ class Admin_model extends CI_Model
 
     public function jumlahPengaduanByUmum()
     {
-        $this->db->where('pgd_biaya_perbaikan ', 1);
+        $this->db->where('pgd_biaya_perbaikan =', 1);
         // $this->db->or_where('pgd_adm_status =', 'Diterima');
         // $this->db->or_where('pgd_umum_status =', 'Diproses');
-        // $this->db->where('pgd_read_by_umum =', 0);
-        // $this->db->or_where('pgd_read_by_umum =', 1);
+        $this->db->where('pgd_read_by_umum =', 0);
+        $query = $this->db->get('tkt_pengaduan');
+        return $query->num_rows();
+    }
+
+    public function jumlahPengaduanByTeknisi($teknisi)
+    {
+        $this->db->where('pgd_read_by_teknisi =', 0);
+        $this->db->where('pgd_teknisi =', $teknisi);
         $query = $this->db->get('tkt_pengaduan');
         return $query->num_rows();
     }
@@ -163,6 +179,21 @@ class Admin_model extends CI_Model
         // $this->db->or_where('pgd_umum_status =', 'Diterima');
         // $this->db->or_where('pgd_umum_status =', 'Ditunda');
         $this->db->or_where('pgd_read_by_admin =', 0);
+        $query = $this->db->get('tkt_pengaduan aduan');
+        return $query->result_array();
+    }
+
+    public function notifPengajuanTeknisi($teknisi)
+    {
+        $this->db->select('pegawai.pg_nama, aduan.*');
+        // $this->db->join('tkt_ticket tiket', 'tiket.tk_id = aduan.pgd_tk_id ','left');
+        $this->db->join('tkt_pegawai pegawai', 'pegawai.pg_nip = aduan.pgd_pg_nip ', 'left');
+        // $this->db->where('pgd_biaya_perbaikan =', 0);
+        // $this->db->where('pgd_adm_status =', 'Diproses');
+        // $this->db->or_where('pgd_umum_status =', 'Diterima');
+        // $this->db->or_where('pgd_umum_status =', 'Ditunda');
+        $this->db->where('pgd_read_by_teknisi =', 0);
+        $this->db->where('pgd_teknisi =', $teknisi);
         $query = $this->db->get('tkt_pengaduan aduan');
         return $query->result_array();
     }

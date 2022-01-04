@@ -184,12 +184,30 @@ class Pengaduan extends CI_Controller
         $data['url_export'] = site_url('Pengaduan' . $url_export);
         $data['tahun'] = $this->admin->tahunPengaduan();
         $data['title'] = 'Data Pengaduan Masuk';
+        $data['bidang'] = $this->admin->count('tkt_bidang');
         if (isBagianUmum()) {
             $data['notifikasi'] = $this->admin->jumlahPengaduanByUmum();
-        } elseif (isAdmin()) {
+        } else if (isAdmin()) {
             $data['notifikasi'] = $this->admin->jumlahPengaduanByAdmin();
+        } else {
+            $data['notifikasi'] = $this->admin->jumlahPengaduanByTeknisi($this->session->userdata('login_session')['nama']);
         }
-        $data['pengaduan'] = $this->admin->notifPengajuanAdmin();
+        if (isAdmin()) {
+            $data['pengaduan'] = $this->admin->notifPengajuanAdmin();
+        } else if (isBagianUmum()) {
+            $data['pengaduan'] = $this->admin->notifPengajuanUmum();
+        } else {
+            $data['pengaduan'] = $this->admin->notifPengajuanTeknisi($this->session->userdata('login_session')['nama']);
+        }
+        $data['jumlah_pengaduan'] = $this->admin->getJumlahPengaduanPerHari();
+        $data['pengaduan_diproses'] = $this->admin->getJumlahPengaduanUmum();
+        $data['pengaduan_diterima'] = $this->admin->getJumlahPengaduan('Diterima');
+        $data['pengaduan_ditunda'] = $this->admin->getJumlahPengaduan('Ditunda');
+        if (isTeknisi()) {
+            $data['pengaduan_diproses'] = count($this->admin->getPenugasan($this->session->userdata('login_session')['nama']));
+            $data['pengaduan_diterima'] = $this->admin->getStatusPenugasan($this->session->userdata('login_session')['nama'], 'Sudah Selesai');
+            $data['pengaduan_ditunda'] = $this->admin->getStatusPenugasan($this->session->userdata('login_session')['nama'], 'Belum Selesai');
+        }
         // $data['data_pengaduan'] = $this->admin->dataPengaduan();
         $this->template->load('templates/dashboard', 'pengaduan/dataPengaduan', $data);
     }
@@ -538,9 +556,12 @@ class Pengaduan extends CI_Controller
             $this->admin->updateMass('tkt_pengaduan', ['pgd_adm_status' => 'Diterima', 'pgd_read_by_admin' => 1]);
         } elseif (isBagianUmum()) {
             $this->admin->updateMass('tkt_pengaduan', ['pgd_read_by_umum' => 1]);
+        } else {
+            $this->admin->updateMass('tkt_pengaduan', ['pgd_read_by_teknisi' => 1]);
         }
+        if(!isTeknisi()) redirect('pengaduan/dataPengaduan');
+        redirect('penugasan/dataPenugasan');
 
-        redirect('pengaduan/dataPengaduan');
     }
 
 
