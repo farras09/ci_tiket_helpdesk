@@ -1,0 +1,11 @@
+=== ADMIN ===
+username : admin
+password : admin
+
+
+=== BAGIAN UMUM ===
+username : bagianumum
+password : 123456
+
+
+=== PEGAWAI ===
